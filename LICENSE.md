@@ -1,6 +1,6 @@
 The SLiSeFilters.jl package is licensed under the MIT "Expat" License:
 
-> Copyright (c) 2018: Jan Winkelmann.
+> Copyright (c) 2018: Jan Winkelmann, Konrad Kollnig.
 >
 > Permission is hereby granted, free of charge, to any person obtaining a copy
 > of this software and associated documentation files (the "Software"), to deal

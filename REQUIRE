@@ -1,1 +1,4 @@
 julia 0.6
+LBFGSB 0.0.2
+GaussQuadrature 0.4.0
+Optim 0.14.0
