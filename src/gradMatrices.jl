@@ -36,7 +36,7 @@ function calcY( z, c::SLiSeFilters.Config )
             Y[k,l] = Y_kl( z[k], z[l], c );
         end
     end
-    Y = Y + tril(Y, -1).';
+    Y = Y + transpose(tril(Y, -1));
 end
 
 # W is real symmetric
@@ -51,7 +51,7 @@ function  calcW( z, c::SLiSeFilters.Config )
             end
         end
     end
-    W = W + tril(W, -1).';
+    W = W + transpose(tril(W, -1));
 end
 
 # W is real symmetric
@@ -66,7 +66,7 @@ function calcWtp( z, c::SLiSeFilters.Config )
             end
         end
     end
-    W = W + tril(W, -1).';
+    W = W + transpose(tril(W, -1));
 end
 
 # X is hermitian
@@ -212,7 +212,7 @@ end
 
 
 function calcDeltaXp( z, c::SLiSeFilters.Config )
-        X = zeros(Complex{Float64},length(z),length(z));
+    X = zeros(Complex{Float64},length(z),length(z));
     for k=1:length(z)
         for l=1:length(z)
             X[k,l] = -case4( -z[l], -conj(z[k]), c );
@@ -272,7 +272,7 @@ function calcDeltaWcp( z, c::SLiSeFilters.Config )
 end
 
 function calcDeltaZ( z, c::SLiSeFilters.Config )
-  X = zeros(Complex{Float64},length(z),length(z));
+    X = zeros(Complex{Float64},length(z),length(z));
     for k=1:length(z)
         for l=1:length(z)
             X[k,l] = -case4( -z[l], conj(z[k]), c );
@@ -282,7 +282,7 @@ function calcDeltaZ( z, c::SLiSeFilters.Config )
 end
 
 function calcDeltaZp( z, c::SLiSeFilters.Config )
-  X = zeros(Complex{Float64},length(z),length(z));
+    X = zeros(Complex{Float64},length(z),length(z));
     for k=1:length(z)
         for l=1:length(z)
             X[k,l] = case4( z[l], -conj(z[k]), c );
@@ -292,25 +292,25 @@ function calcDeltaZp( z, c::SLiSeFilters.Config )
 end
 
 function calcDeltaThetac( z, c::SLiSeFilters.Config )
-  X = zeros(Complex{Float64},length(z),1);
+    X = zeros(Complex{Float64},length(z),1);
     for k=1:length(z)
-      X[k] = case2_h( z[k], c );
+        X[k] = case2_h( z[k], c );
     end
     return X
 end
 
 function calcDeltaTheta( z, c::SLiSeFilters.Config )
-  X = zeros(Complex{Float64},length(z),1);
+    X = zeros(Complex{Float64},length(z),1);
     for k=1:length(z)
-      X[k] = case2_h( conj(z[k]), c );
+        X[k] = case2_h( conj(z[k]), c );
     end
     return X
 end
 
 function calcDeltaThetacp( z, c::SLiSeFilters.Config )
-  X = zeros(Complex{Float64},length(z),1);
+    X = zeros(Complex{Float64},length(z),1);
     for k=1:length(z)
-      X[k] = -case2_h( -z[k], c );
+        X[k] = -case2_h( -z[k], c );
     end
     return X
 end
