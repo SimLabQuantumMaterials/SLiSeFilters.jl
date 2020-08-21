@@ -1,6 +1,6 @@
 "Import filter from file"
-function readFilter(filename)
-	saved = readdlm(filename,',', skipstart=2)
+function readFilter(filename, skipstart = 2)
+	saved = readdlm(filename,',', skipstart = skipstart)
 	z1  = saved[1,:] + im*saved[2,:]
 	a1  = saved[3,:] + im*saved[4,:]
 

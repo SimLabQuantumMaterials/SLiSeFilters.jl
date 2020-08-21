@@ -1,8 +1,20 @@
 import BlackBoxOptim
 import Optim
+import NLopt
 
 "Perform WCR minimization, through the SLiSe framework"
-function wise( ws, z1, a1, G_user; G_in = 1, G_out = 2, outpath = nothing, lb = nothing, refine = true )
+function wise( ws, z1, a1, G_user;
+            G_in = 1,
+            G_out = 2,
+            outpath = nothing,
+            lb = nothing,
+            refine = true,
+
+            # To disable parts of oriented restart
+            gappingEnabled = true,
+            weightsEnabled = true,
+            lastIntEnabled = true
+        )
     p      = length( z1 )
     x0     = SLiSeFilters.startingPointWS(ws) # the starting weight function
     G      = sqrt( G_user )                   # shifting for better filters
@@ -36,11 +48,6 @@ function wise( ws, z1, a1, G_user; G_in = 1, G_out = 2, outpath = nothing, lb = 
     prevItWcr  = Inf # monitor improvement iteration by iteration
     tol        = 1e-9
     tolReached = false
-
-    # To disable parts of oriented restart
-    gappingEnabled = true
-    weightsEnabled = true
-    lastIntEnabled = true
 
     # Objective function
     function f(value::Vector)
@@ -163,11 +170,11 @@ function wise( ws, z1, a1, G_user; G_in = 1, G_out = 2, outpath = nothing, lb = 
 
         # Cache the results
         if (outpath != nothing)
-            writedlm( string(outpath,"/wcr_",p,"_",G_user,"_filter_it",i,"_wise.dat"),([z1 a1]/G)',',') # comma-separated, for JULIA v0.7
-            open( string(outpath,"/wcr_",p,"_",G_user,"_filter_it",i,"_wise.dat"), "a") do f # append
+            writedlm( string(outpath,"/wcr_",p,"_",G_user,"_lb",lb,"_filter_it",i,"_wise.dat"),([z1 a1]/G)',',') # comma-separated, for JULIA v0.7
+            open( string(outpath,"/wcr_",p,"_",G_user,"_lb",lb,"_filter_it",i,"_wise.dat"), "a") do f # append
                 writecsv(f, ([real(z1) imag(z1) real(a1) imag(a1)]/G)') # comma-separated, for JULIA v0.6
             end
-            writedlm(string(outpath,"/wcr_",p,"_",G_user,"_weight_it",i,"_wise.dat"),[ws.intv ws.wght]',',')
+            writedlm(string(outpath,"/wcr_",p,"_",G_user,"_lb",lb,"_weight_it",i,"_wise.dat"),[ws.intv ws.wght]',',')
         end
 
         # Validate change in WCR
@@ -201,7 +208,7 @@ function wise( ws, z1, a1, G_user; G_in = 1, G_out = 2, outpath = nothing, lb = 
 end
 
 "Perform WCR minimization, without SLiSe"
-function wiseRefine( z1, a1, G_user; outpath = nothing )
+function wiseRefine( z1, a1, G_user; lb = nothing, outpath = nothing )
     p       = length( z1 )
     maxiter = 100000
     every   = 100
@@ -219,11 +226,44 @@ function wiseRefine( z1, a1, G_user; outpath = nothing )
         else
             flush(STDOUT)
         end
-        return wcr(split_(fromR(x))...,G_user, mintol = mintol ) # , lowerGap = 1.
+        return wcr(split_(fromR(x))...,G_user, mintol = mintol )
+    end
+
+    count = 0
+    function f2(value::Vector, grad::Vector)
+        count::Int += 1
+
+        y = wcr(split_(fromR(value))...,G_user, mintol = mintol )
+
+        if (count % every == 0)
+         @printf "%6d   %14e\n" count y
+        end
+
+        return y
     end
 
     # Do the optimization
-    res = Optim.optimize(g,
+    z1, a1 = nothing, nothing
+
+    if (lb != nothing)
+        n     = length(x0)
+        lower = [ones(div(n,2))*-Inf;ones(div(n,4))*lb;ones(div(n,4))*-Inf]
+        upper = [ones(n) * Inf]
+
+        opt = NLopt.Opt(:LN_NELDERMEAD, length(x0))
+        NLopt.lower_bounds!( opt, lower )
+        NLopt.maxeval!(opt, maxiter)
+        NLopt.ftol_rel!(opt, 1e-6)
+        NLopt.min_objective!(opt, f2)
+
+        # Perform NLOpt Minimization
+        @printf "Evals    Function value    \n"
+        @printf "------   --------------    \n"
+        (minf,minx,reason) = NLopt.optimize(opt, x0)
+
+        z1,a1 = split_(fromR(minx))
+    else
+        res = Optim.optimize(g,
                    x0,
                    Optim.NelderMead(),
                    Optim.Options(iterations        = maxiter,
@@ -234,13 +274,14 @@ function wiseRefine( z1, a1, G_user; outpath = nothing )
                                  )
                    )
 
-    # Check for convergence
-    if !Optim.converged(res)
-        @printf "Attention: No convergence reached after %d steps!\n" maxiter
-    end
+        # Check for convergence
+        if !Optim.converged(res)
+            @printf "Attention: No convergence reached after %d steps!\n" maxiter
+        end
 
-    # Obtain the results
-    z1,a1 = split_(fromR(res.minimizer))
+        # Obtain the results
+        z1,a1 = split_(fromR(res.minimizer))
+    end
 
     # Output the results
     @printf "[Refined] CurrentMin: %.16e\n" wcr( z1, a1, G_user )

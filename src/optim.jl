@@ -3,7 +3,7 @@ import Optim
 # Transformation from C to R
 split_(x)  = x[1:Int(length(x)/2)],x[Int(length(x)/2) + 1:end]
 
-"BFGS using Hager-Zhang"
+"BFGS using MoreThuente"
 function optim( z, alpha, c, lb=nothing; linesearch = Optim.LineSearches.MoreThuente() )
     function grad!(stor,x)
         stor[:] = vcat(Fgradient(split_(x)..., c)...)

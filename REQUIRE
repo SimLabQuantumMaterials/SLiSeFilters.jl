@@ -2,3 +2,4 @@ julia 0.6
 FastGaussQuadrature 0.3.1
 Optim 0.15.2
 BlackBoxOptim 0.3.0
+NLopt 0.3.6
