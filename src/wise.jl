@@ -288,8 +288,8 @@ function wiseRefine( z1, a1, G_user; lb = nothing, outpath = nothing )
 
     # Save the results to disk
     if (outpath != nothing)
-        writedlm( string(outpath,"/wcr_",p,"_",G_user,"_filter_wise_refined.dat"),([z1 a1])',',') # comma-separated, for JULIA v0.7
-        open( string(outpath,"/wcr_",p,"_",G_user,"_filter_wise_refined.dat"), "a") do f # append
+        writedlm( string(outpath,"/wcr_",p,"_",G_user,"_lb",lb,"_filter_wise_refined.dat"),([z1 a1])',',') # comma-separated, for JULIA v0.7
+        open( string(outpath,"/wcr_",p,"_",G_user,"_lb",lb,"_filter_wise_refined.dat"), "a") do f # append
             writecsv(f, ([real(z1) imag(z1) real(a1) imag(a1)])') # comma-separated, for JULIA v0.6
         end
     end
