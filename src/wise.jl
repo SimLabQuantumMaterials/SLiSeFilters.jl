@@ -204,7 +204,7 @@ function wise( ws, z1, a1, G_user;
     end
 
     @printf "Performing refinement step..\n"
-    return wiseRefine( z1, a1, G_user, outpath = outpath )
+    return wiseRefine( z1, a1, G_user, outpath = outpath, lb = lb )
 end
 
 "Perform WCR minimization, without SLiSe"
@@ -253,7 +253,7 @@ function wiseRefine( z1, a1, G_user; lb = nothing, outpath = nothing )
         opt = NLopt.Opt(:LN_NELDERMEAD, length(x0))
         NLopt.lower_bounds!( opt, lower )
         NLopt.maxeval!(opt, maxiter)
-        NLopt.ftol_rel!(opt, 1e-6)
+        NLopt.ftol_rel!(opt, 1e-9)
         NLopt.min_objective!(opt, f2)
 
         # Perform NLOpt Minimization
