@@ -53,7 +53,7 @@ A `Jupyter` notebook to demo the underlying `SLiSe` framework is available in th
 A large set of benchmark eigenproblems for the [FEAST eigensolver](http://www.feast-solver.org/) can be obtained from the [SpectrumSlicingTestSuite.jl](https://github.com/SimLabQuantumMaterials/SpectrumSlicingTestSuite.jl) `Julia` package.
 
 ## References
-- Jan Winkelmann and Edoardo Di Napoli. 2017. [Non-Linear Least-Squares Optimization of Rational Filters for the Solution of Interior Eigenvalue Problems.](http://arxiv.org/abs/1704.03255) ArXiv e-prints, (Apr. 2017), 29 pages. arXiv: 1704.03255.
+- Jan Winkelmann and Edoardo Di Napoli. 2019. [Non-linear Least-Squares Optimization of Rational Filters for the Solution of Interior Hermitian Eigenvalue Problems.](https://doi.org/10.3389/fams.2019.00005) Frontiers in Applied Mathematics
+  and Statistics, doi: 10.3389/fams.2019.00005.
 - Eric Polizzi. 2009. [Density-matrix-based algorithm for solving eigenvalue problems.](https://doi.org/10.1103/PhysRevB.79.115112) Physical Review B, 79, 11, (Mar. 2009), 115112–115117. doi: 10.1103/PhysRevB.79.115112.
-- Richard Byrd, Peihuang Lu, Jorge Nocedal, and Ciyou Zhu. 1995. [A limited memory algorithm for bound constrained
-optimization.](https://doi.org/10.1137/0916069) SIAM Journal on Scientific Computing, 16, 5, (Sept. 1995), 1190–1208. doi: 10.1137/0916069.
+- Richard Byrd, Peihuang Lu, Jorge Nocedal, and Ciyou Zhu. 1995. [A limited memory algorithm for bound constrained optimization.](https://doi.org/10.1137/0916069) SIAM Journal on Scientific Computing, 16, 5, (Sept. 1995), 1190–1208. doi: 10.1137/0916069.
