@@ -1,4 +1,7 @@
 module SLiSeFilters
+
+using Printf, LinearAlgebra
+
 export createConfig,createWS,updateWS!,startingPointWS,optimise,residual,Fgradient,hessianApprox,points,descent,levMar,optim,lbfgsb,wise,readFilter,readWS
 
 const R = Float64;
