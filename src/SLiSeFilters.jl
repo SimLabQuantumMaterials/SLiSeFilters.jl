@@ -1,6 +1,6 @@
 module SLiSeFilters
 
-using Printf, LinearAlgebra
+using Printf, LinearAlgebra, DelimitedFiles
 
 export createConfig,createWS,updateWS!,startingPointWS,optimise,residual,Fgradient,hessianApprox,points,descent,levMar,optim,lbfgsb,wise,readFilter,readWS
 
