@@ -1,0 +1,17 @@
+name = "SLiSeFilters"
+uuid = "a16f3d4c-8f06-41c6-9c4b-811ba45db23e"
+authors = ["brunowu <xinzhe.wu1990@gmail.com>"]
+version = "0.1.0"
+
+[deps]
+ArrayInterface = "4fba245c-0d91-5ea0-9b3e-6abc04ee57a9"
+BenchmarkProfiles = "ecbce9bc-3e5e-569d-9e29-55181f61f8d0"
+BlackBoxOptim = "a134a8b2-14d6-55f6-9291-3336d3ab0209"
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+FastGaussQuadrature = "442a2c76-b920-505d-bb47-c5924d526838"
+Lbfgsb = "1dffd949-52f5-401e-81d8-269f89701222"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+NLopt = "76087f3c-5699-56af-9a33-bf431cd00edd"
+Optim = "429524aa-4258-5aef-a3af-852621145aeb"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
+SpectrumSlicingTestSuite = "9d626e9e-037c-4cf1-92ae-c6e6dcb749aa"
